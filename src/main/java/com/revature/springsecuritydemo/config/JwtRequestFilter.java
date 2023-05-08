@@ -55,10 +55,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             // validate our token using the token util:
             if(jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-                System.out.println("Valid Token!");
                 // configure our security context accordingly:
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                // I forgot this **VERY** important line which actually sets the token to the security context
+                // Otherwise, we don't actually let Spring security know that this request is allowed due to the token being valid
+                SecurityContextHolder.getContext().setAuthentication(token);
             }
             else {
                 System.out.println("Ivalid Token!");
