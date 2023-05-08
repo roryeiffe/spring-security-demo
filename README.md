@@ -1,0 +1,1 @@
+When a user logs in, they should request a token so that when they try to do something, they'll have that token to authenticate themselves.
